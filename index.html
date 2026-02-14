@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DASH ZONE • VALORANT GUIDE</title>
+    
+    <!-- FONTE INTER (OFICIAL RIOT) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ===== TEMA OFICIAL RIOT GAMES 2026 ===== */
+        :root {
+            --vermelho: #ff4654;
+            --vermelho-escuro: #d13b47;
+            --preto: #1e1e1e;
+            --cinza: #2c2c2c;
+            --cinza-claro: #3a3a3a;
+            --branco: #f9f9f9;
+            --gradiente: linear-gradient(135deg, #ff4654 0%, #ff6f7e 100%);
+            --sombra: 0 8px 24px rgba(0, 0, 0, 0.4);
+            --borda: 1px solid rgba(255, 70, 84, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--preto);
+            background-image: 
+                linear-gradient(rgba(255, 70, 84, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 70, 84, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            color: var(--branco);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+        }
+
+        header {
+            background: rgba(30, 30, 30, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--vermelho);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header h1 {
+            font-size: 2.2em;
+            font-weight: 800;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--branco);
+        }
+
+        header h1 span {
+            color: var(--vermelho);
+            font-weight: 900;
+        }
+
+        nav {
+            background: rgba(30, 30, 30, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            border-bottom: var(--borda);
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--branco);
+            text-decoration: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.95em;
+            padding: 5px 0;
+            position: relative;
+            transition: 0.2s;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--gradiente);
+            transition: 0.2s;
+            transform: translateX(-50%);
+        }
+
+        nav a:hover {
+            color: var(--vermelho);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 50px 20px;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 80px;
+            padding: 60px 40px;
+            background: rgba(44, 44, 44, 0.3);
+            border-radius: 16px;
+            border: var(--borda);
+            backdrop-filter: blur(5px);
+        }
+
+        .hero h2 {
+            font-size: 4em;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 20px;
+            background: var(--gradiente);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.3em;
+            color: #ccc;
+            max-width: 700px;
+            margin: 0 auto;
+            font-weight: 400;
+        }
+
+        .hero .status {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 10px 30px;
+            background: var(--gradiente);
+            color: var(--branco);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 0.9em;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(255, 70, 84, 0.3);
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .card {
+            background: var(--cinza);
+            border: var(--borda);
+            border-radius: 12px;
+            padding: 35px 25px;
+            transition: 0.25s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 0;
+            background: var(--gradiente);
+            transition: 0.25s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--vermelho);
+            box-shadow: var(--sombra);
+            background: #333;
+        }
+
+        .card:hover::before {
+            height: 100%;
+        }
+
+        .card h3 {
+            color: var(--vermelho);
+            font-size: 1.8em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .card ul {
+            list-style: none;
+        }
+
+        .card li {
+            margin-bottom: 12px;
+            padding-left: 20px;
+            position: relative;
+            color: #ddd;
+            font-weight: 400;
+        }
+
+        .card li::before {
+            content: "•";
+            color: var(--vermelho);
+            position: absolute;
+            left: 0;
+            font-size: 1.2em;
+        }
+
+        .dica-do-dia {
+            margin-top: 80px;
+            background: var(--cinza);
+            border-radius: 16px;
+            padding: 50px;
+            border: var(--borda);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dica-do-dia::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradiente);
+        }
+
+        .dica-do-dia h3 {
+            font-size: 2em;
+            color: var(--branco);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .dica-do-dia h3 span {
+            background: var(--gradiente);
+            color: var(--branco);
+            padding: 5px 15px;
+            font-size: 0.5em;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+
+        .dica-do-dia p {
+            font-size: 1.6em;
+            font-weight: 500;
+            color: var(--branco);
+            line-height: 1.4;
+            border-left: 4px solid var(--vermelho);
+            padding-left: 25px;
+        }
+
+        .ferramentas-rapidas {
+            margin-top: 60px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .ferramenta-item {
+            background: rgba(0, 0, 0, 0.2);
+            border: var(--borda);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            transition: 0.2s;
+            text-decoration: none;
+            color: var(--branco);
+        }
+
+        .ferramenta-item:hover {
+            border-color: var(--vermelho);
+            background: #333;
+            transform: translateY(-3px);
+        }
+
+        .ferramenta-item span {
+            font-size: 2.5em;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .ferramenta-item h4 {
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--vermelho);
+        }
+
+        .ferramenta-item p {
+            color: #aaa;
+            font-size: 0.85em;
+        }
+
+        footer {
+            background: var(--cinza);
+            border-top: 2px solid var(--vermelho);
+            padding: 50px 0;
+            margin-top: 100px;
+            text-align: center;
+        }
+
+        footer p {
+            color: #aaa;
+            letter-spacing: 1.5px;
+            font-size: 0.95em;
+        }
+
+        .footer-credit {
+            margin-top: 20px;
+            color: #666;
+            font-size: 0.8em;
+            border-top: 1px solid rgba(255,70,84,0.2);
+            padding-top: 20px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        @media (max-width: 768px) {
+            header h1 { font-size: 1.8em; }
+            nav { gap: 20px; }
+            nav a { font-size: 0.8em; }
+            .hero h2 { font-size: 2.5em; }
+            .hero p { font-size: 1.1em; }
+            .dica-do-dia p { font-size: 1.2em; }
+            .dica-do-dia { padding: 30px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>DASH <span>ZONE</span></h1>
+    </header>
+
+    <nav>
+        <a href="index.html" class="ativo">INÍCIO</a>
+        <a href="agentes.html">AGENTES</a>
+        <a href="mapas.html">MAPAS</a>
+        <a href="arsenal.html">ARSENAL</a>
+        <a href="treino.html">TREINO</a>
+        <a href="sensitivity-tool.html">SENSIBILIDADE</a>
+        <a href="sensitivity-converter.html">CONVERSOR</a>
+        <a href="pro-sense.html">SENSE DOS PROS</a>
+    </nav>
+
+    <div class="container">
+        <div class="hero">
+            <h2>DASH ZONE</h2>
+            <p>Seu guia tático definitivo para evoluir no Valorant • Agentes • Armas • Mapas • Treino</p>
+            <span class="status">🔴 ONLINE • 28 AGENTES • 12 MAPAS • 19 ARMAS</span>
+        </div>
+
+        <div class="cards">
+            <div class="card">
+                <h3>AGENTES</h3>
+                <ul>
+                    <li>Jett • Duelista</li>
+                    <li>Phoenix • Duelista</li>
+                    <li>Raze • Duelista</li>
+                    <li>Sage • Sentinela</li>
+                    <li>Killjoy • Sentinela</li>
+                    <li>+23 agentes</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>MAPAS</h3>
+                <ul>
+                    <li>Bind • Teleportes</li>
+                    <li>Haven • 3 bombs</li>
+                    <li>Ascent • Portas</li>
+                    <li>Icebox • Containers</li>
+                    <li>Split • Vertical</li>
+                    <li>+7 mapas</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>ARSENAL</h3>
+                <ul>
+                    <li>Vandal • Rifle</li>
+                    <li>Phantom • Rifle</li>
+                    <li>Operator • Fuzil</li>
+                    <li>Sheriff • Pistola</li>
+                    <li>Spectre • Sub</li>
+                    <li>+14 armas</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="ferramentas-rapidas">
+            <a href="sensitivity-tool.html" class="ferramenta-item">
+                <span>🎯</span>
+                <h4>CALCULADORA EDPI</h4>
+                <p>Encontre sua sensibilidade perfeita • Baseado em pro players</p>
+            </a>
+            <a href="sensitivity-converter.html" class="ferramenta-item">
+                <span>🔄</span>
+                <h4>CONVERSOR ENTRE JOGOS</h4>
+                <p>CS2 • Fortnite • OW2 • Apex • R6 • Mantenha sua memória muscular</p>
+            </a>
+            <a href="treino.html" class="ferramenta-item">
+                <span>🧠</span>
+                <h4>TREINO TÁTICO</h4>
+                <p>Neurociência do aim • Miyagi Method • Economia Patch 12.02</p>
+            </a>
+        </div>
+
+        <div class="dica-do-dia">
+            <h3>
+                DICA TÁTICA
+                <span>PRO</span>
+            </h3>
+            <p>No Bind, utilize fumaças no teleporte do U Hall para eliminar ângulos de risco e garantir vantagem no pós-plant</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>DASH ZONE • SISTEMA TÁTICO DE TREINAMENTO</p>
+        <p style="margin-top: 10px; color: #ff4654;">#RISE TO THE TOP</p>
+        <div class="footer-credit">
+            DASH ZONE não é associado, patrocinado ou afiliado à Riot Games Inc. Valorant e todos os seus personagens, marcas e imagens são propriedade da Riot Games. Projeto independente criado por DASH para a comunidade brasileira.
+        </div>
+    </footer>
+
+<!-- ===== GERADOR DE DICA TÁTICA DASH ZONE • PATCH 12.02 ===== -->
+<style>
+    .dash-tip-generator {
+        background: var(--cinza);
+        border: var(--borda);
+        border-radius: 16px;
+        padding: 30px;
+        margin: 40px 0;
+        position: relative;
+        overflow: hidden;
+        border-left: 4px solid var(--vermelho);
+    }
+
+    .dash-tip-generator::before {
+        content: "🔥";
+        position: absolute;
+        right: 20px;
+        bottom: 10px;
+        font-size: 4em;
+        opacity: 0.1;
+    }
+
+    .tip-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+
+    .tip-header h3 {
+        font-size: 1.8em;
+        font-weight: 700;
+        color: var(--branco);
+        margin: 0;
+    }
+
+    .tip-badge {
+        background: var(--gradiente);
+        color: var(--branco);
+        padding: 5px 15px;
+        border-radius: 50px;
+        font-size: 0.8em;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .tip-content {
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 20px;
+        border-left: 4px solid #ff4654;
+        font-size: 1.2em;
+        line-height: 1.5;
+        color: #fff;
+        min-height: 100px;
+    }
+
+    .tip-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+        color: #aaa;
+        font-size: 0.9em;
+    }
+
+    .tip-category {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .tip-cat {
+        background: rgba(255, 70, 84, 0.2);
+        padding: 4px 12px;
+        border-radius: 50px;
+        border: 1px solid rgba(255, 70, 84, 0.5);
+        color: #ff4654;
+        font-weight: 600;
+        font-size: 0.8em;
+        text-transform: uppercase;
+    }
+
+    .tip-refresh {
+        background: transparent;
+        border: 1px solid var(--vermelho);
+        color: var(--branco);
+        padding: 10px 25px;
+        border-radius: 50px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .tip-refresh:hover {
+        background: var(--gradiente);
+        border-color: transparent;
+        transform: scale(1.05);
+    }
+
+    .tip-source {
+        color: #888;
+        font-size: 0.8em;
+        margin-top: 10px;
+        border-top: 1px solid rgba(255,70,84,0.2);
+        padding-top: 15px;
+    }
+
+    @media (max-width: 768px) {
+        .tip-header { flex-direction: column; align-items: flex-start; }
+        .tip-meta { flex-direction: column; align-items: flex-start; }
+    }
+</style>
+
+<div class="dash-tip-generator">
+    <div class="tip-header">
+        <h3>⚡ DICA TÁTICA DASH ZONE</h3>
+        <span class="tip-badge" id="tipPatchBadge">PATCH 12.02 • 2026</span>
+    </div>
+    
+    <div class="tip-content" id="tipContent">
+        <!-- DICA SERÁ INSERIDA AQUI VIA JAVASCRIPT -->
+    </div>
+    
+    <div class="tip-meta">
+        <div class="tip-category" id="tipCategory">
+            <!-- CATEGORIA SERÁ INSERIDA AQUI -->
+        </div>
+        <button id="newTipBtn" class="tip-refresh">
+            <span>🔄</span> NOVA DICA
+        </button>
+    </div>
+    <div class="tip-source" id="tipSource">
+        <!-- FONTE SERÁ INSERIDA AQUI -->
+    </div>
+</div>
+
+<script>
+    // ===== BANCO DE DICAS TÁTICAS • PATCH 12.02 / 2026 =====
+    // Fontes: Riot Patch Notes, VCT 2026 Meta, Pro Player Insights [citation:2][citation:3][citation:4]
+    
+    const tacticalTips = [
+        // ===== AGENTES S-TIER 2026 =====
+        {
+            tip: "🔴 **NOVO VETO:** O Interceptor (E) destrói AUTOMATICAMENTE paredes da Sage, Viper e Harbor. Se o inimigo tem Controller, leve Veto para anular o setup inteiro sem gastar utilidade.",
+            category: ["AGENTE", "SENTINELA", "COUNTER"],
+            patch: "Patch 11.07b",
+            source: "gigamaus.de • Veto Agent Guide 2026 [citation:3]"
+        },
+        {
+            tip: "🟣 **CLOVE É S-TIER:** Com 54% winrate, Clove domina porque pode lançar fumaças DEPOIS de morta. Morreu segurando site? Segura o E e fuma o spike mesmo abatida. Seu time agradece.",
+            category: ["AGENTE", "CONTROLADOR", "META"],
+            patch: "Patch 12.00",
+            source: "Patch 12.0 Meta Guide 2026 [citation:5]"
+        },
+        {
+            tip: "🟡 **TEJO NERFADO? AINDA É FORTE:** Patch 12.00 reduziu concussão do Q (4s → 2.5s) mas ele agora causa DANO (20-35). Use Entrega Especial para limpar corners com dano + revelação.",
+            category: ["AGENTE", "INICIADOR", "DANO"],
+            patch: "Patch 12.00",
+            source: "Dtgre • Patch 12.0 Analysis [citation:5]"
+        },
+        {
+            tip: "⚙️ **VYSE BUFFADA:** Ultimate Jardim de Aço agora tem RAIO 28m (era 26m) e largura 8m (era 7.5m). No retake, jogue atrás da parede inimiga. Eles perdem arma principal e você tem vantagem de pistola.",
+            category: ["AGENTE", "SENTINELA", "ULTIMATE"],
+            patch: "Patch 12.00",
+            source: "Riot Patch Notes 12.00 [citation:5]"
+        },
+        {
+            tip: "🌊 **HARBOR META:** Buff no Patch 12.00: Ressaca (C) agora lentidão 2s (era 0.6s) e NÃO PRECISA DE LINHA DE VISÃO. Jogue atrás de paredes e ainda assim aplica lentidão. Quebrado.",
+            category: ["AGENTE", "CONTROLADOR", "BUFF"],
+            patch: "Patch 12.00",
+            source: "Valorant Patch 12.0 Notes [citation:5]"
+        },
+        {
+            tip: "💥 **BREACH MAIS RÁPIDO:** Estopim (Q) teve velocidade do projétil aumentada em 20% (2000 → 2400). Agora flasha antes do inimigo reagir. Use para entrar em sites abertos.",
+            category: ["AGENTE", "INICIADOR", "FLASH"],
+            patch: "Patch 12.00",
+            source: "Patch 12.0 Buffs [citation:5]"
+        },
+        {
+            tip: "❄️ **SAGE CURATIVA:** Patch 12.00 melhorou a geometria do Orbe Curativo (E). Agora cura mesmo com pequenos obstáculos no caminho. Não precisa mais de linha de visão perfeita.",
+            category: ["AGENTE", "SENTINELA", "CURA"],
+            patch: "Patch 12.00",
+            source: "Valorant Season 2026 Notes [citation:5]"
+        },
+        
+        // ===== MAPAS • BREEZE REWORK 2026 =====
+        {
+            tip: "🏝️ **BREEZE REWORK 2026:** A Main perdeu a escada e o corredor foi removido. Agora só se entra por A Main ou Mid Doors. CONTROLADORES são obrigatórios. Viper continua rainha.",
+            category: ["MAPA", "BREEZE", "REWORK"],
+            patch: "Season 2026: Act 1",
+            source: "Esports.net • Breeze Guide 2026 [citation:4]"
+        },
+        {
+            tip: "🌴 **BREEZE MID:** O boost agora precisa de HABILIDADE (Jett dash, Raze satchel). Não dá mais pra subir pulando. Use isso a seu favor: smoke o boost e force inimigos a desperdiçarem utilidade.",
+            category: ["MAPA", "BREEZE", "POSICIONAMENTO"],
+            patch: "v12.00",
+            source: "Esports.net • Breeze Rework [citation:4]"
+        },
+        {
+            tip: "🧱 **BREEZE B SITE:** A parede do B Main foi estendida. Mid NÃO é mais visível do fundo do site. Defensores: não confiem em ver rotação pelo B Main sem utilidade.",
+            category: ["MAPA", "BREEZE", "DEFESA"],
+            patch: "v12.00",
+            source: "Valorant Breeze Map Guide 2026 [citation:4]"
+        },
+        {
+            tip: "🎯 **BREEZE RR BÔNUS:** RR losses são REDUZIDOS EM 50% nas primeiras 2 semanas de competitivo. Aproveite para aprender o mapa sem medo de cair de elo!",
+            category: ["MAPA", "BREEZE", "RANKED"],
+            patch: "Patch 12.00",
+            source: "Patch 12.0 Competitive Update [citation:5]"
+        },
+        
+        // ===== ARMAS • BANDIT & ECONOMIA =====
+        {
+            tip: "💰 **NOVA BANDIT:** Pistola de $600. Um tiro na cabeça MATA contra armadura leve (125 HP) até 30m. Anti-eco obrigatório. Melhor que Sheriff se o inimigo não tem escudo pesado.",
+            category: ["ARMA", "PISTOLA", "ECO"],
+            patch: "Patch 12.00",
+            source: "Valorant Patch 12.0 Weapon Guide [citation:5]"
+        },
+        {
+            tip: "📊 **ECONOMIA 2026:** FORÇA = Spectre/Bulldog + Armadura. SAVE = mantenha SMG. BONUS = não compre, roube arma. Time money < 3900? SAVE. Guarde sua Vandal, vale 2.900 créditos.",
+            category: ["ECONOMIA", "FORÇA", "BONUS"],
+            patch: "Patch 12.02",
+            source: "Valorant Economy Guide 2026 [citation:2]"
+        },
+        
+        // ===== MECÂNICAS E AIM =====
+        {
+            tip: "🧠 **MIELINIZAÇÃO:** Horas 0-10: estranho. Horas 10-50: você para, mas lento. Horas 50+: subconsciente. NÃO desista do contra-strafe. Seu cérebro está literalmente criando matéria branca.",
+            category: ["MECÂNICA", "CIÊNCIA", "TREINO"],
+            patch: "Fundamental",
+            source: "Valorant Guide 2026: Iron to Radiant [citation:2]"
+        },
+        {
+            tip: "🎯 **eDPI IDEAL:** Média dos pros = 280 (800 DPI × 0.35). Acima de 500? Você está sabotando sua mira. Abaixo de 160? Difícil girar 180°. Calibre seu setup.",
+            category: ["SETUP", "SENSIBILIDADE", "PRO"],
+            patch: "2026 Meta",
+            source: "BattlePooja • Pro Settings 2026 [citation:2]"
+        },
+        {
+            tip: "🖱️ **RAW INPUT BUFFER:** Ative no Valorant. Reduz latência em 1-2ms. Desative 'Aprimorar Precisão do Ponteiro' no Windows. Aceleração de mouse DESTRÓI memória muscular.",
+            category: ["SETUP", "MOUSE", "LATÊNCIA"],
+            patch: "Configuração Obrigatória",
+            source: "Valorant Settings Guide 2026 [citation:2]"
+        },
+        
+        // ===== POSICIONAMENTO E TÁTICA =====
+        {
+            tip: "🥧 **SLICE THE PIE:** Nunca wide swing em 3 inimigos. Você vira 1v3 em três 1v1s. Limpe o ângulo próximo, dê um passo, limpe o próximo. Pressa é morte.",
+            category: ["TÁTICA", "POSICIONAMENTO", "SURVIVAL"],
+            patch: "Fundamental",
+            source: "Valorant Angle Isolation Guide [citation:2]"
+        },
+        {
+            tip: "👁️ **PEEKER'S ADVANTAGE:** Quem se MOVE vê quem está PARADO primeiro. Abuse: quando souber onde o inimigo está, SAIA STRAFANDO. Não devagar. A vantagem é SUA.",
+            category: ["TÁTICA", "PEEK", "LATÊNCIA"],
+            patch: "Network Fundamentals",
+            source: "Peeker's Advantage Explained [citation:2]"
+        },
+        {
+            tip: "🎨 **COR DO INIMIGO:** Olho humano reage mais rápido ao AMARELO. Mude para Deuteranopia. Você ganha milissegundos de reação. Milissegundos = headshots.",
+            category: ["SETUP", "VISUAL", "REAÇÃO"],
+            patch: "Configuração Obrigatória",
+            source: "Valorant Color Settings [citation:2]"
+        },
+        
+        // ===== COMPOSIÇÕES E META =====
+        {
+            tip: "🔄 **DOUBLE CONTROLLER É META:** Em Lotus e Haven, dois controladores (ex: Omen + Viper) garantem flexibilidade e segurança caso um morra cedo. 2026 é ano de controle, não de duelistas.",
+            category: ["COMPOSIÇÃO", "META", "ESTRATÉGIA"],
+            patch: "VCT 2026",
+            source: "gigamaus.de • Agent Tactics 2026 [citation:3]"
+        },
+        {
+            tip: "🤖 **KAY/O CONTRA VYSE/VETO:** Supressão anula o Jardim de Aço e o Interceptor. Se o inimigo tem sentinelas metálicas, KAY/O é counter obrigatório. Eles perdem utilidade, você ganha espaço.",
+            category: ["COMPOSIÇÃO", "COUNTER", "UTILIDADE"],
+            patch: "Patch 11.08+",
+            source: "Valorant Agent Tactics 2026 [citation:3]"
+        },
+        {
+            tip: "🧪 **SOVA É S-TIER NOVAMENTE:** Com a volta da Breeze e meta de double controller, Sova domina. Aprenda 3 lineups: A Main, B Main e Mid. Você carreia informação.",
+            category: ["AGENTE", "INICIADOR", "LINEUP"],
+            patch: "2026 Meta",
+            source: "VCT 2026 Meta Analysis [citation:3]"
+        },
+        
+        // ===== POST-PLANT E CLUTCH =====
+        {
+            tip: "🔥 **POST-PLANT HELL:** Viper + Brimstone = 15+ segundos de dano no spike. Molotov + Veneno de Cobra alternados. Não precisa nem ver o inimigo. Só ouvir o 'tick' da morte.",
+            category: ["TÁTICA", "POST-PLANT", "CONTROLADOR"],
+            patch: "Clutch Fundamental",
+            source: "Valorant Economy Guide [citation:2]"
+        },
+        {
+            tip: "⏱️ **TEMPO DE DEFUSE:** São 7 segundos. Conte mentalmente. Se faltam 8 segundos no relógio e você está no site, NÃO tente defusar. Mate primeiro. DEFUSE DEPOIS.",
+            category: ["TÁTICA", "CLUTCH", "GESTÃO"],
+            patch: "Fundamental",
+            source: "Iron to Radiant Guide [citation:2]"
+        }
+    ];
+
+    // ===== FUNÇÃO PARA GERAR DICA ALEATÓRIA =====
+    function generateRandomTip() {
+        const randomIndex = Math.floor(Math.random() * tacticalTips.length);
+        const tipData = tacticalTips[randomIndex];
+        
+        // Atualiza conteúdo da dica
+        const tipContent = document.getElementById('tipContent');
+        tipContent.innerHTML = tipData.tip.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        
+        // Atualiza categorias
+        const tipCategory = document.getElementById('tipCategory');
+        tipCategory.innerHTML = '';
+        tipData.category.forEach(cat => {
+            const span = document.createElement('span');
+            span.className = 'tip-cat';
+            span.textContent = cat;
+            tipCategory.appendChild(span);
+        });
+        
+        // Atualiza fonte e patch
+        const tipSource = document.getElementById('tipSource');
+        tipSource.innerHTML = `📚 Fonte: ${tipData.source} • ${tipData.patch}`;
+        
+        // Atualiza badge do patch
+        const patchBadge = document.getElementById('tipPatchBadge');
+        patchBadge.textContent = `${tipData.patch} • 2026`;
+    }
+
+    // ===== EVENT LISTENER PARA BOTÃO "NOVA DICA" =====
+    document.getElementById('newTipBtn').addEventListener('click', generateRandomTip);
+
+    // ===== GERA UMA DICA AO CARREGAR A PÁGINA =====
+    window.addEventListener('DOMContentLoaded', generateRandomTip);
+</script>
+</body>
+</html>

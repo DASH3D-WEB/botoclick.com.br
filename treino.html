@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TREINO • DASH ZONE</title>
+    
+    <!-- FONTE INTER (OFICIAL RIOT) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ===== TEMA OFICIAL RIOT GAMES 2026 ===== */
+        :root {
+            --vermelho: #ff4654;
+            --vermelho-escuro: #d13b47;
+            --preto: #1e1e1e;
+            --cinza: #2c2c2c;
+            --cinza-claro: #3a3a3a;
+            --branco: #f9f9f9;
+            --gradiente: linear-gradient(135deg, #ff4654 0%, #ff6f7e 100%);
+            --sombra: 0 8px 24px rgba(0, 0, 0, 0.4);
+            --borda: 1px solid rgba(255, 70, 84, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--preto);
+            background-image: 
+                linear-gradient(rgba(255, 70, 84, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 70, 84, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            color: var(--branco);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+        }
+
+        header {
+            background: rgba(30, 30, 30, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--vermelho);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header h1 {
+            font-size: 2.2em;
+            font-weight: 800;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--branco);
+        }
+
+        header h1 span {
+            color: var(--vermelho);
+            font-weight: 900;
+        }
+
+        nav {
+            background: rgba(30, 30, 30, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            border-bottom: var(--borda);
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--branco);
+            text-decoration: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.95em;
+            padding: 5px 0;
+            position: relative;
+            transition: 0.2s;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--gradiente);
+            transition: 0.2s;
+            transform: translateX(-50%);
+        }
+
+        nav a:hover {
+            color: var(--vermelho);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        nav a.ativo {
+            color: var(--vermelho);
+        }
+
+        nav a.ativo::after {
+            width: 100%;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 50px 20px;
+        }
+
+        .titulo-pagina {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 40px 20px;
+            background: rgba(44, 44, 44, 0.3);
+            border-radius: 16px;
+            border: var(--borda);
+            backdrop-filter: blur(5px);
+        }
+
+        .titulo-pagina h2 {
+            font-size: 3.5em;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+            background: var(--gradiente);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .titulo-pagina p {
+            font-size: 1.2em;
+            color: #ccc;
+            letter-spacing: 1px;
+        }
+
+        .selo-patch {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 8px 25px;
+            background: var(--gradiente);
+            color: var(--branco);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.85em;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(255, 70, 84, 0.3);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: var(--cinza);
+            border: var(--borda);
+            border-radius: 12px;
+            padding: 30px;
+            transition: 0.25s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: fit-content;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 0;
+            background: var(--gradiente);
+            transition: 0.25s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--vermelho);
+            box-shadow: var(--sombra);
+            background: #333;
+        }
+
+        .card:hover::before {
+            height: 100%;
+        }
+
+        .card h3 {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--branco);
+            margin-bottom: 20px;
+            border-bottom: var(--borda);
+            padding-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card h4 {
+            color: var(--vermelho);
+            font-size: 1.2em;
+            font-weight: 700;
+            margin: 20px 0 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .lista-treinamento {
+            list-style: none;
+        }
+
+        .lista-treinamento li {
+            margin-bottom: 12px;
+            padding-left: 25px;
+            position: relative;
+            color: #ddd;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        .lista-treinamento li::before {
+            content: "•";
+            color: var(--vermelho);
+            position: absolute;
+            left: 0;
+            font-size: 1.2em;
+            font-weight: 700;
+        }
+
+        .lista-treinamento li strong {
+            color: var(--branco);
+        }
+
+        .dica-box {
+            background: rgba(0, 0, 0, 0.2);
+            border-left: 4px solid var(--vermelho);
+            padding: 20px;
+            margin: 20px 0 10px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: var(--gradiente);
+            color: var(--branco);
+            font-weight: 600;
+            font-size: 0.7em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 50px;
+            margin-right: 10px;
+        }
+
+        .badge-pro {
+            background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
+        }
+
+        .badge-ciencia {
+            background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+        }
+
+        .pro-quote {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--vermelho);
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .pro-quote::before {
+            content: "“";
+            color: var(--vermelho);
+            font-size: 4em;
+            position: absolute;
+            top: -15px;
+            left: 10px;
+            opacity: 0.3;
+            font-family: 'Georgia', serif;
+        }
+
+        .pro-name {
+            color: var(--vermelho);
+            font-weight: 700;
+            margin-top: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9em;
+        }
+
+        .tabela-stats {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .tabela-stats th {
+            background: var(--gradiente);
+            color: var(--branco);
+            padding: 12px;
+            text-align: left;
+            text-transform: uppercase;
+            font-size: 0.8em;
+            letter-spacing: 1px;
+        }
+
+        .tabela-stats td {
+            padding: 12px;
+            border-bottom: var(--borda);
+            color: #ddd;
+            font-size: 0.9em;
+        }
+
+        .tabela-stats tr:hover td {
+            background: rgba(255, 70, 84, 0.1);
+        }
+
+        .economia-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .economia-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-left: 3px solid var(--vermelho);
+            border-radius: 0 8px 8px 0;
+        }
+
+        .economia-valor {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: var(--vermelho);
+            display: block;
+            margin-top: 5px;
+        }
+
+        .rotina-card {
+            background: var(--gradiente);
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 30px;
+            color: var(--branco);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .rotina-card::before {
+            content: "⏳";
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+            font-size: 4em;
+            opacity: 0.1;
+        }
+
+        .rotina-card h3 {
+            color: var(--branco);
+            border-bottom-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .ferramentas-relacionadas {
+            margin-top: 60px;
+            padding: 30px;
+            background: rgba(44, 44, 44, 0.3);
+            border-radius: 16px;
+            border: var(--borda);
+        }
+
+        .ferramentas-relacionadas h3 {
+            color: var(--branco);
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ferramentas-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .ferramentas-links a {
+            background: rgba(0, 0, 0, 0.2);
+            color: var(--branco);
+            text-decoration: none;
+            padding: 15px 25px;
+            border-radius: 8px;
+            border: var(--borda);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.2s;
+        }
+
+        .ferramentas-links a:hover {
+            border-color: var(--vermelho);
+            background: #333;
+            transform: translateY(-3px);
+        }
+
+        .ferramentas-links span {
+            font-size: 1.5em;
+        }
+
+        .ferramentas-grid {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .ferramenta-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 4px solid var(--vermelho);
+            min-width: 200px;
+            text-align: center;
+            transition: 0.2s;
+        }
+
+        .ferramenta-item:hover {
+            background: #333;
+            transform: translateY(-3px);
+        }
+
+        .ferramenta-item span {
+            font-size: 2.5em;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .ferramenta-item p {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .ferramenta-item small {
+            color: #aaa;
+            font-size: 0.85em;
+        }
+
+        footer {
+            background: var(--cinza);
+            border-top: 2px solid var(--vermelho);
+            padding: 50px 0;
+            margin-top: 100px;
+            text-align: center;
+        }
+
+        footer p {
+            color: #aaa;
+            letter-spacing: 1.5px;
+            font-size: 0.95em;
+        }
+
+        .footer-credit {
+            margin-top: 20px;
+            color: #666;
+            font-size: 0.8em;
+            border-top: 1px solid rgba(255,70,84,0.2);
+            padding-top: 20px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .fontes {
+            margin-top: 30px;
+            color: #777;
+            font-size: 0.75em;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            header h1 { font-size: 1.8em; }
+            nav { gap: 20px; }
+            nav a { font-size: 0.8em; }
+            .titulo-pagina h2 { font-size: 2.2em; }
+            .grid-2 { grid-template-columns: 1fr; }
+            .economia-grid { grid-template-columns: 1fr; }
+            .ferramentas-grid { flex-direction: column; align-items: center; }
+            .ferramentas-links { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>DASH <span>ZONE</span></h1>
+    </header>
+
+    <nav>
+         <a href="index.html">INÍCIO</a>
+        <a href="agentes.html">AGENTES</a>
+        <a href="mapas.html">MAPAS</a>
+        <a href="arsenal.html">ARSENAL</a>
+        <a href="treino.html" class="ativo">TREINO</a>
+        <a href="sensitivity-tool.html">SENSIBILIDADE</a>
+        <a href="sensitivity-converter.html">CONVERSOR</a>
+        <a href="pro-sense.html">SENSE DOS PROS</a>
+    </nav>
+
+    <div class="container">
+        <div class="titulo-pagina">
+            <h2>TREINO TÁTICO</h2>
+            <p>CIÊNCIA DO APRENDIZADO • PRO PLAYERS • PATCH 12.02</p>
+            <span class="selo-patch">ATUALIZADO FEVEREIRO 2026</span>
+        </div>
+
+        <!-- NEUROCIÊNCIA DO AIM -->
+        <div class="grid-2">
+            <div class="card">
+                <h3>🧠 NEUROCIÊNCIA DO AIM</h3>
+                <div class="dica-box">
+                    <span class="badge badge-ciencia">BARDOZ PRINCIPLE</span>
+                    <p style="font-size: 1.2em; margin-top: 15px; font-weight: 600; color: var(--vermelho);">"SUAVIDADE É VELOCIDADE"</p>
+                    <p style="color: #ddd;">Flicks rápidos e erráticos criam memória muscular do ERRO. O cérebro aprende o movimento que você MAIS repete. Treine devagar com 95%+ de precisão antes de acelerar.</p>
+                </div>
+                <div class="pro-quote">
+                    <p style="font-size: 1.1em; font-style: italic;">"Se você tenta flickar rápido e erra, seu cérebro aprende o erro. Suavidade primeiro. Velocidade é consequência."</p>
+                    <div class="pro-name">— BARDOZ (AIM COACH)</div>
+                </div>
+                <h4>⚡ MIELINIZAÇÃO</h4>
+                <ul class="lista-treinamento">
+                    <li><strong>Horas 0-10:</strong> Estranho. Você esquece de parar antes de atirar.</li>
+                    <li><strong>Horas 10-50:</strong> Você para, mas é lento. Consciente.</li>
+                    <li><strong>Horas 50+:</strong> Subconsciente. A mão já sabe.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>🎯 SETUP & ERGONOMIA</h3>
+                <div class="dica-box">
+                    <span class="badge badge-pro">PRO PLAYER</span>
+                    <p style="margin-top: 10px; font-weight: 700;">eDPI PROFISSIONAL MÉDIO: <span style="color: var(--vermelho); font-size: 1.4em;">280</span></p>
+                </div>
+                <table class="tabela-stats">
+                    <tr>
+                        <th>Nível</th>
+                        <th>eDPI</th>
+                        <th>800 DPI</th>
+                    </tr>
+                    <tr>
+                        <td>Pro</td>
+                        <td>160-280</td>
+                        <td>0.2 - 0.35</td>
+                    </tr>
+                    <tr>
+                        <td>Alto (Wrist)</td>
+                        <td>400+</td>
+                        <td>0.5+</td>
+                    </tr>
+                </table>
+                <ul class="lista-treinamento" style="margin-top: 20px;">
+                    <li><strong>Mouse Acceleration:</strong> DESLIGADO (Windows: "Aprimorar precisão do ponteiro" = OFF)</li>
+                    <li><strong>Polling Rate:</strong> 1000Hz / 4000Hz</li>
+                    <li><strong>Raw Input Buffer:</strong> ATIVADO (1-2ms de latência a menos)</li>
+                    <li><strong>Cor do Inimigo:</strong> Amarelo (Deuteranopia) – olho humano reage mais rápido</li>
+                    <li><strong>Superfície:</strong> Consistência > hype. Mousepads de vidro mantém atrito estável.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- MÉTODOS DOS PRO PLAYERS -->
+        <div class="grid-2">
+            <div class="card">
+                <h3>🥋 MIYAGI METHOD</h3>
+                <span class="badge badge-pro">COACH RED</span>
+                <p style="margin: 15px 0; color: var(--vermelho); font-weight: 700;">"Calma sob pressão"</p>
+                <ol class="lista-treinamento" style="list-style: decimal; padding-left: 20px;">
+                    <li style="display: list-item; list-style: decimal; margin-left: 20px;"><strong>Deathmatch sem atirar:</strong> Sheriff. Corra entre os inimigos. Apenas TRACE a cabeça com o crosshair. Não atire. Objetivo: sobreviver. Remove o pânico de "preciso matar".</li>
+                    <li style="display: list-item; list-style: decimal; margin-left: 20px; margin-top: 15px;"><strong>Guardian DM:</strong> Só atire com crosshair PERFEITO na cabeça. Errou? PARA. Recomece.</li>
+                    <li style="display: list-item; list-style: decimal; margin-left: 20px; margin-top: 15px;"><strong>Micro-waiting:</strong> Não atire no primeiro frame. Espere o inimigo cometer o erro de strafe. Disciplina.</li>
+                </ol>
+                <div class="pro-quote" style="margin-top: 20px;">
+                    <p>"Se você consegue top-frag no DM com Sheriff contra Vandals, seu crosshair placement é nível Immortal."</p>
+                    <div class="pro-name">— RED (MIYAGI METHOD)</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>⚡ PREMS METHOD</h3>
+                <span class="badge badge-pro">DEMON1 / RADIANT</span>
+                <p style="margin: 15px 0; color: var(--vermelho); font-weight: 700;">Micro-correção explosiva</p>
+                <ol class="lista-treinamento" style="list-style: decimal; padding-left: 20px;">
+                    <li style="display: list-item; list-style: decimal; margin-left: 20px;">Range. Eliminate 50. Strafing OFF.</li>
+                    <li style="display: list-item; list-style: decimal; margin-left: 20px;">Flick INTENCIONALMENTE PASSANDO DA CABEÇA.</li>
+                    <li style="display: list-item; list-style: decimal; margin-left: 20px;">Micro-corrige VOLTANDO para a cabeça.</li>
+                    <li style="display: list-item; list-style: decimal; margin-left: 20px;">Atire.</li>
+                </ol>
+                <div class="dica-box" style="margin-top: 20px;">
+                    <span class="badge">VOLTAIC BENCHMARKS</span>
+                    <p style="margin-top: 10px;"><strong>Meta Ascendant+ (Aimlabs):</strong></p>
+                    <ul class="lista-treinamento">
+                        <li>Sixshot: 80k+</li>
+                        <li>1w6ts: 1100+</li>
+                    </ul>
+                    <p style="margin-top: 10px; color: #aaa; font-size: 0.9em;">Gridshot NÃO é treino de Valorant. Alvos grandes demais. Use Sixshot.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ECONOMIA PATCH 12.02 -->
+        <div class="card" style="margin-top: 20px;">
+            <h3>💰 ECONOMIA DE GUERRA • PATCH 12.02</h3>
+            <span class="badge badge-ciencia">EX-PRO CS: JOSIE CLARK</span>
+            <span class="badge" style="background: linear-gradient(135deg, #ff8c42 0%, #ffa25e 100%);">ATUALIZADO 2026</span>
+            
+            <div class="grid-2" style="margin-top: 25px;">
+                <div>
+                    <h4>REGRAS DE CRÉDITO</h4>
+                    <table class="tabela-stats">
+                        <tr><th>Resultado</th><th>Créditos</th></tr>
+                        <tr><td>Vitória</td><td>3.000</td></tr>
+                        <tr><td>1ª derrota</td><td>1.900</td></tr>
+                        <tr><td>2ª derrota</td><td>2.400</td></tr>
+                        <tr><td>3ª+ derrota</td><td>2.900</td></tr>
+                        <tr><td>Spike plant</td><td>+300</td></tr>
+                        <tr><td>Abate</td><td>+200</td></tr>
+                    </table>
+                </div>
+                <div>
+                    <h4>FLUXO DE DECISÃO</h4>
+                    <ul class="lista-treinamento">
+                        <li><strong>Ganhou pistol?</strong> FORÇA. Spectre/Bulldog + Armadura. Não economize.</li>
+                        <li><strong>Perdeu pistol?</strong> SAVE. Garanta Vandal no round 3.</li>
+                        <li><strong>Bonus (round 3):</strong> Não compre. Mantenha SMG. Objetivo: dano + roubar arma.</li>
+                        <li><strong>Time money &lt; 3900?</strong> SAVE.</li>
+                        <li><strong>Vandal sobreviveu?</strong> Guarde. Vale 2.900 créditos.</li>
+                    </ul>
+                    <div class="dica-box" style="margin-top: 20px;">
+                        <span class="badge">PATCH 12.02</span>
+                        <p style="margin-top: 10px;"><strong>Reyna:</strong> Overheal do Devorar é TEMPORÁRIO (10s). Ultimate custa +1 ponto (7→8).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MOVIMENTO E ÂNGULOS -->
+        <div class="grid-2" style="margin-top: 30px;">
+            <div class="card">
+                <h3>🔄 CONTRA-STRAFE</h3>
+                <span class="badge badge-ciencia">FÍSICA DO JOGO</span>
+                <div class="dica-box">
+                    <p style="font-size: 1.3em; color: var(--vermelho); font-weight: 700; text-align: center;">A → D → Clique</p>
+                </div>
+                <ol class="lista-treinamento" style="list-style: decimal; padding-left: 20px;">
+                    <li style="display: list-item; list-style: decimal; margin-left: 20px;">Strafing DIREITA (D): velocidade +100</li>
+                    <li style="display: list-item; list-style: decimal; margin-left: 20px;">SOLTA D</li>
+                    <li style="display: list-item; list-style: decimal; margin-left: 20px;">TOCA A (oposto) INSTANTANEAMENTE</li>
+                    <li style="display: list-item; list-style: decimal; margin-left: 20px;">ATIRA no ms que a velocidade zera</li>
+                </ol>
+                <p style="margin-top: 15px; color: #aaa;">Deadzone: A→D. No milissegundo da troca, velocidade = 0. Tiro 100% preciso.</p>
+            </div>
+            <div class="card">
+                <h3>🧱 POSICIONAMENTO DE PAREDE</h3>
+                <span class="badge badge-pro">AIMLABS</span>
+                <div class="dica-box">
+                    <p style="color: var(--vermelho); font-weight: 700; font-size: 1.2em;">NUNCA COLE NA PAREDE.</p>
+                </div>
+                <ul class="lista-treinamento">
+                    <li><strong>Erro comum:</strong> Colar no ângulo. O inimigo vê SEU OMBRO antes de você ver ELE.</li>
+                    <li><strong>Correto:</strong> 1-2 passos ATRÁS. Mais ângulo, menos exposição.</li>
+                    <li><strong>Slice the Pie:</strong> Limpe ângulos progressivamente. 1v3 vira três 1v1s.</li>
+                    <li><strong>Off-angles:</strong> Não segure onde o inimigo espera. Surpreenda.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ROTINA DIÁRIA -->
+        <div class="rotina-card" style="margin-top: 40px;">
+            <h3 style="border-bottom-color: rgba(255,255,255,0.3);">⏳ ROTINA DIÁRIA • 20 MINUTOS</h3>
+            <span class="badge" style="background: var(--branco); color: var(--preto); margin-bottom: 20px;">CONSISTÊNCIA > VOLUME</span>
+            
+            <div class="grid-2">
+                <div>
+                    <table class="tabela-stats" style="background: rgba(0,0,0,0.2);">
+                        <tr>
+                            <th>Duração</th>
+                            <th>Atividade</th>
+                        </tr>
+                        <tr>
+                            <td>0-5</td>
+                            <td>Range (bots fáceis) • Fluxo sanguíneo</td>
+                        </tr>
+                        <tr>
+                            <td>5-10</td>
+                            <td>Miyagi Method (DM) • Calma, rastreio</td>
+                        </tr>
+                        <tr>
+                            <td>10-15</td>
+                            <td>Sheriff Deathmatch • Crosshair placement</td>
+                        </tr>
+                        <tr>
+                            <td>15-20</td>
+                            <td>Swiftplay • Aplicação mecânica</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="dica-box" style="background: rgba(255,255,255,0.1);">
+                    <p style="font-weight: 700; color: var(--branco);">📌 TREINO PESADO = DEPOIS DO RANKED</p>
+                    <p style="color: #ddd; margin-top: 10px;">Aquecimento antes. Construção de habilidade depois. Mão cansada não joga rankeada.</p>
+                </div>
+            </div>
+            <div style="margin-top: 30px; text-align: center;">
+                <span style="color: var(--branco); font-weight: 700; text-transform: uppercase; letter-spacing: 2px; background: rgba(0,0,0,0.3); padding: 10px 25px; border-radius: 50px;">20 minutos por dia > 4 horas uma vez por semana</span>
+            </div>
+        </div>
+
+        <!-- META PATCH 12.02 -->
+        <div class="grid-2" style="margin-top: 40px;">
+            <div class="card">
+                <h3>📊 TIER LIST • PATCH 12.02</h3>
+                <span class="badge">FEVEREIRO 2026</span>
+                
+                <div style="margin-top: 25px;">
+                    <div style="display: flex; align-items: center; margin-bottom: 15px; background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px;">
+                        <span style="background: var(--gradiente); color: var(--branco); font-weight: 800; padding: 5px 15px; border-radius: 50px; margin-right: 15px;">S</span>
+                        <span style="font-weight: 600;">Jett, Clove, Tejo, Vyse, Veto</span>
+                    </div>
+                    <div style="display: flex; align-items: center; margin-bottom: 15px; background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px;">
+                        <span style="background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%); color: var(--branco); font-weight: 800; padding: 5px 15px; border-radius: 50px; margin-right: 15px;">A</span>
+                        <span style="font-weight: 600;">Harbor (BUFF), Raze, Omen, Cypher</span>
+                    </div>
+                    <div style="display: flex; align-items: center; margin-bottom: 15px; background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px;">
+                        <span style="background: linear-gradient(135deg, #10b981 0%, #34d399 100%); color: var(--branco); font-weight: 800; padding: 5px 15px; border-radius: 50px; margin-right: 15px;">B</span>
+                        <span style="font-weight: 600;">Reyna (NERF), Sage, Deadlock</span>
+                    </div>
+                </div>
+                
+                <div class="dica-box" style="margin-top: 20px;">
+                    <p style="font-weight: 700; color: var(--vermelho);">Harbor Patch 12.02:</p>
+                    <p style="color: #ddd;">Parede 8m de altura, Cove recarga 30s, Ultimate 25% mais rápido.</p>
+                    <p style="font-weight: 700; color: var(--vermelho); margin-top: 10px;">Reyna:</p>
+                    <p style="color: #ddd;">Overheal temporário. Ultimate +1 custo. Menos snowball.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>🧠 GAME SENSE</h3>
+                <span class="badge badge-pro">PRO PLAYER</span>
+                
+                <div class="pro-quote" style="margin-top: 10px;">
+                    <p style="font-size: 1.1em; font-style: italic;">"Eu parei de perguntar 'consigo matar ele?' e comecei a perguntar 'o que dá MAIOR CHANCE de vencer o round?'"</p>
+                    <div class="pro-name">— Fonte: Pro Player Anônimo</div>
+                </div>
+                
+                <ul class="lista-treinamento" style="margin-top: 25px;">
+                    <li><strong>VOD Review:</strong> 1 partida por dia. Pergunte: "Por que ele rotacionou aqui?" "Por que ele salvou?"</li>
+                    <li><strong>Peeker's Advantage:</strong> Quem se move vê primeiro. Contra-ataque: off-angles ou jiggle peek.</li>
+                    <li><strong>Crosshair Placement:</strong> Sempre na linha do pescoço. Mapas têm textura de referência.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- FERRAMENTAS RELACIONADAS -->
+        <div class="ferramentas-relacionadas">
+            <h3>🛠️ FERRAMENTAS RELACIONADAS</h3>
+            <div class="ferramentas-links">
+                <a href="sensitivity-tool.html">
+                    <span>🎯</span>
+                    Calculadora de Sensibilidade
+                </a>
+                <a href="sensitivity-converter.html">
+                    <span>🔄</span>
+                    Conversor entre Jogos
+                </a>
+                <a href="agentes.html">
+                    <span>🎮</span>
+                    Fichas dos Agentes
+                </a>
+            </div>
+        </div>
+
+        <!-- FERRAMENTAS TÁTICAS -->
+        <div class="card" style="margin-top: 40px; text-align: center;">
+            <h3>🛠️ FERRAMENTAS DASH ZONE</h3>
+            
+            <div class="ferramentas-grid">
+                <div class="ferramenta-item">
+                    <span>🎯</span>
+                    <p style="font-weight: 700;">Calculadora eDPI</p>
+                    <small style="color: #aaa;">DPI × Sens = eDPI</small>
+                    <div style="color: var(--vermelho); font-size: 1.5em; font-weight: 800; margin-top: 10px;">280 ± 40</div>
+                </div>
+                <div class="ferramenta-item">
+                    <span>⚙️</span>
+                    <p style="font-weight: 700;">Crosshair Pro</p>
+                    <small style="color: #aaa;">Pequeno. Gap 1-2</small>
+                    <div style="color: var(--vermelho); font-size: 1.2em; font-weight: 700; margin-top: 10px;">Verde / Ciano</div>
+                </div>
+                <div class="ferramenta-item">
+                    <span>📈</span>
+                    <p style="font-weight: 700;">Meta Voltaic</p>
+                    <small style="color: #aaa;">Sixshot</small>
+                    <div style="color: var(--vermelho); font-size: 1.2em; font-weight: 700; margin-top: 10px;">80k+</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="fontes">
+            <p style="color: #666;">Fontes: Voltaic Benchmarks, Aimlabs, Bardoz, Miyagi Method, PREMS, Esports Insider, Patch Notes 12.02. Conteúdo atualizado para fevereiro de 2026.</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>DASH ZONE • SISTEMA TÁTICO DE TREINAMENTO</p>
+        <p style="margin-top: 10px; color: #ff4654;">#DASHZONE</p>
+        <div class="footer-credit">
+            DASH ZONE não é associado, patrocinado ou afiliado à Riot Games Inc. Valorant e todos os seus personagens, marcas e imagens são propriedade da Riot Games. Projeto independente criado por DASH para a comunidade brasileira.
+        </div>
+    </footer>
+
+    <script>
+        // Atualiza o ano automaticamente
+        document.querySelector('footer p:first-child').innerHTML = `DASH ZONE • SISTEMA TÁTICO DE TREINAMENTO • ${new Date().getFullYear()}`;
+    </script>
+</body>
+</html>

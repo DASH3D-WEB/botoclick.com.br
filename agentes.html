@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AGENTES • DASH ZONE</title>
+    
+    <!-- FONTE INTER (OFICIAL RIOT) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ===== TEMA OFICIAL RIOT GAMES 2026 ===== */
+        :root {
+            --vermelho: #ff4654;
+            --vermelho-escuro: #d13b47;
+            --preto: #1e1e1e;
+            --cinza: #2c2c2c;
+            --cinza-claro: #3a3a3a;
+            --branco: #f9f9f9;
+            --gradiente: linear-gradient(135deg, #ff4654 0%, #ff6f7e 100%);
+            --sombra: 0 8px 24px rgba(0, 0, 0, 0.4);
+            --borda: 1px solid rgba(255, 70, 84, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--preto);
+            background-image: 
+                linear-gradient(rgba(255, 70, 84, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 70, 84, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            color: var(--branco);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+        }
+
+        header {
+            background: rgba(30, 30, 30, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--vermelho);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header h1 {
+            font-size: 2.2em;
+            font-weight: 800;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--branco);
+        }
+
+        header h1 span {
+            color: var(--vermelho);
+            font-weight: 900;
+        }
+
+        nav {
+            background: rgba(30, 30, 30, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            border-bottom: var(--borda);
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--branco);
+            text-decoration: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.95em;
+            padding: 5px 0;
+            position: relative;
+            transition: 0.2s;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--gradiente);
+            transition: 0.2s;
+            transform: translateX(-50%);
+        }
+
+        nav a:hover {
+            color: var(--vermelho);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        nav a.ativo {
+            color: var(--vermelho);
+        }
+
+        nav a.ativo::after {
+            width: 100%;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 50px 20px;
+        }
+
+        .titulo-pagina {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 40px 20px;
+            background: rgba(44, 44, 44, 0.3);
+            border-radius: 16px;
+            border: var(--borda);
+            backdrop-filter: blur(5px);
+        }
+
+        .titulo-pagina h2 {
+            font-size: 3.5em;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+            background: var(--gradiente);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .titulo-pagina p {
+            font-size: 1.2em;
+            color: #ccc;
+            letter-spacing: 1px;
+        }
+
+        .filtros {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        .filtro-btn {
+            background: transparent;
+            color: var(--branco);
+            border: 1px solid var(--vermelho);
+            padding: 10px 25px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: 0.2s;
+            border-radius: 50px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .filtro-btn:hover,
+        .filtro-btn.ativo {
+            background: var(--gradiente);
+            color: var(--branco);
+            border-color: transparent;
+            box-shadow: 0 4px 15px rgba(255, 70, 84, 0.3);
+        }
+
+        .agentes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 30px;
+        }
+
+        .agente-card {
+            background: var(--cinza);
+            border: var(--borda);
+            border-radius: 12px;
+            padding: 25px;
+            transition: 0.25s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .agente-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 0;
+            background: var(--gradiente);
+            transition: 0.25s;
+        }
+
+        .agente-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--vermelho);
+            box-shadow: var(--sombra);
+            background: #333;
+        }
+
+        .agente-card:hover::before {
+            height: 100%;
+        }
+
+        .agente-imagem {
+            width: 100%;
+            height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            overflow: hidden;
+            border: var(--borda);
+        }
+
+        .agente-imagem img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.3s ease;
+        }
+
+        .agente-card:hover .agente-imagem img {
+            transform: scale(1.08);
+        }
+
+        .agente-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: var(--borda);
+            padding-bottom: 15px;
+        }
+
+        .agente-header h3 {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--branco);
+            letter-spacing: 1px;
+        }
+
+        .classe {
+            padding: 6px 16px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.75em;
+            border-radius: 50px;
+            color: var(--branco);
+        }
+
+        .Duelista { 
+            background: linear-gradient(135deg, #ff4654 0%, #ff6f7e 100%);
+            box-shadow: 0 2px 10px rgba(255, 70, 84, 0.3);
+        }
+        
+        .Controlador { 
+            background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
+            box-shadow: 0 2px 10px rgba(139, 92, 246, 0.3);
+        }
+        
+        .Sentinela { 
+            background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+            box-shadow: 0 2px 10px rgba(16, 185, 129, 0.3);
+        }
+        
+        .Iniciador { 
+            background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+            box-shadow: 0 2px 10px rgba(245, 158, 11, 0.3);
+        }
+
+        .agente-desc {
+            color: #ccc;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+            line-height: 1.5;
+            border-left: 3px solid var(--vermelho);
+            padding-left: 15px;
+        }
+
+        .habilidades h4 {
+            color: var(--vermelho);
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+        }
+
+        .habilidade-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 12px;
+            margin-bottom: 10px;
+            border-left: 3px solid var(--vermelho);
+            border-radius: 4px;
+            transition: 0.2s;
+        }
+
+        .habilidade-item:hover {
+            background: rgba(255, 70, 84, 0.1);
+        }
+
+        .habilidade-nome {
+            color: var(--vermelho);
+            font-weight: 700;
+            display: block;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85em;
+        }
+
+        .habilidade-desc {
+            color: #ddd;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+        .ferramentas-relacionadas {
+            margin-top: 60px;
+            padding: 30px;
+            background: rgba(44, 44, 44, 0.3);
+            border-radius: 16px;
+            border: var(--borda);
+        }
+
+        .ferramentas-relacionadas h3 {
+            color: var(--branco);
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ferramentas-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .ferramentas-links a {
+            background: rgba(0, 0, 0, 0.2);
+            color: var(--branco);
+            text-decoration: none;
+            padding: 15px 25px;
+            border-radius: 8px;
+            border: var(--borda);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.2s;
+        }
+
+        .ferramentas-links a:hover {
+            border-color: var(--vermelho);
+            background: #333;
+            transform: translateY(-3px);
+        }
+
+        .ferramentas-links span {
+            font-size: 1.5em;
+        }
+
+        footer {
+            background: var(--cinza);
+            border-top: 2px solid var(--vermelho);
+            padding: 50px 0;
+            margin-top: 100px;
+            text-align: center;
+        }
+
+        footer p {
+            color: #aaa;
+            letter-spacing: 1.5px;
+            font-size: 0.95em;
+        }
+
+        .footer-credit {
+            margin-top: 20px;
+            color: #666;
+            font-size: 0.8em;
+            border-top: 1px solid rgba(255,70,84,0.2);
+            padding-top: 20px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        @media (max-width: 768px) {
+            header h1 { font-size: 1.8em; }
+            nav { gap: 20px; }
+            nav a { font-size: 0.8em; }
+            .titulo-pagina h2 { font-size: 2.5em; }
+            .agentes-grid { grid-template-columns: 1fr; }
+            .ferramentas-links { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>DASH <span>ZONE</span></h1>
+    </header>
+
+    <nav>
+         <a href="index.html">INÍCIO</a>
+        <a href="agentes.html" class="ativo">AGENTES</a>
+        <a href="mapas.html">MAPAS</a>
+        <a href="arsenal.html">ARSENAL</a>
+        <a href="treino.html">TREINO</a>
+        <a href="sensitivity-tool.html">SENSIBILIDADE</a>
+        <a href="sensitivity-converter.html">CONVERSOR</a>
+        <a href="pro-sense.html">SENSE DOS PROS</a>
+    </nav>
+
+    <div class="container">
+        <div class="titulo-pagina">
+            <h2>AGENTES</h2>
+            <p>FICHAS TÁTICAS • PROTOCOLO DE OPERADORES • PATCH 12.02</p>
+        </div>
+
+        <div class="filtros">
+            <button class="filtro-btn ativo">TODOS</button>
+            <button class="filtro-btn">DUELISTA</button>
+            <button class="filtro-btn">CONTROLADOR</button>
+            <button class="filtro-btn">INICIADOR</button>
+            <button class="filtro-btn">SENTINELA</button>
+        </div>
+
+        <div class="agentes-grid" id="agentes-grid"></div>
+
+        <div class="ferramentas-relacionadas">
+            <h3>🛠️ FERRAMENTAS RELACIONADAS</h3>
+            <div class="ferramentas-links">
+                <a href="sensitivity-tool.html">
+                    <span>🎯</span>
+                    Calculadora de Sensibilidade
+                </a>
+                <a href="sensitivity-converter.html">
+                    <span>🔄</span>
+                    Conversor entre Jogos
+                </a>
+                <a href="treino.html">
+                    <span>🧠</span>
+                    Guia de Treino
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>DASH ZONE • SISTEMA TÁTICO DE TREINAMENTO</p>
+        <p style="margin-top: 10px; color: #ff4654;">#DASHZONE</p>
+        <div class="footer-credit">
+            DASH ZONE não é associado, patrocinado ou afiliado à Riot Games Inc. Valorant e todos os seus personagens, marcas e imagens são propriedade da Riot Games. Projeto independente criado por DASH para a comunidade brasileira.
+        </div>
+    </footer>
+
+    <script>
+        const agentes = [
+            // ===== DUELISTAS (8) =====
+            { 
+                nome: "Jett", 
+                classe: "Duelista", 
+                descricao: "Agente da Coreia do Sul. Ágil e letal, domina os céus.",
+                imagem: "imagens/agentes/Jett_Artwork_Full.png",
+                habilidades: [
+                    { nome: "Q - CORRENTE ASCENDENTE", desc: "Impulsiona Jett para o alto." },
+                    { nome: "E - BRISA DE IMPULSO", desc: "Dá um impulso rápido." },
+                    { nome: "C - EXPLOSÃO DE VENTO", desc: "Cria uma nuvem de fumaça." },
+                    { nome: "X - FURACÃO DE LÂMINAS", desc: "Equipa facas precisas." }
+                ]
+            },
+            { 
+                nome: "Phoenix", 
+                classe: "Duelista", 
+                descricao: "Agente do Reino Unido. Domina o fogo.",
+                imagem: "imagens/agentes/Phoenix_Artwork_Full.png",
+                habilidades: [
+                    { nome: "Q - BOLA CURVA", desc: "Clarão que contorna paredes." },
+                    { nome: "E - MÃOS QUENTES", desc: "Bola de fogo que cura." },
+                    { nome: "C - LABAREDA", desc: "Parede de fogo." },
+                    { nome: "X - RENASCER", desc: "Renasce ao morrer." }
+                ]
+            },
+            { 
+                nome: "Raze", 
+                classe: "Duelista", 
+                descricao: "Agente do Brasil. Especialista em explosivos.",
+                imagem: "imagens/agentes/Raze_Artwork_Full.png",
+                habilidades: [
+                    { nome: "Q - CARGA DE EXPLOSIVOS", desc: "Explosivo que gruda." },
+                    { nome: "E - CARTUCHOS DE TINTA", desc: "Granada de mini-explosivos." },
+                    { nome: "C - BUMBA", desc: "Robô explosivo." },
+                    { nome: "X - ESTRONDOS", desc: "Lança-foguetes." }
+                ]
+            },
+            { 
+                nome: "Reyna", 
+                classe: "Duelista", 
+                descricao: "Agente do México. Drena a vida dos inimigos.",
+                imagem: "imagens/agentes/Reyna_Artwork_Full.png",
+                habilidades: [
+                    { nome: "Q - DEVORAR", desc: "Se cura com orbe." },
+                    { nome: "E - DISPENSAR", desc: "Fica intangível." },
+                    { nome: "C - OLHAR VORAZ", desc: "Cega inimigos." },
+                    { nome: "X - IMPERATRIZ", desc: "Modo fúria." }
+                ]
+            },
+            { 
+                nome: "Yoru", 
+                classe: "Duelista", 
+                descricao: "Agente do Japão. Ilusionista e infiltrador.",
+                imagem: "imagens/agentes/Yoru_Artwork_Full.png",
+                habilidades: [
+                    { nome: "Q - PONTO CEGO", desc: "Flash que contorna." },
+                    { nome: "E - PASSAGEM DIMENSIONAL", desc: "Teleporte." },
+                    { nome: "C - ESTILHAÇO FALSO", desc: "Clone com passos." },
+                    { nome: "X - ESPIONAGEM DIMENSIONAL", desc: "Revela inimigos." }
+                ]
+            },
+            { 
+                nome: "Neon", 
+                classe: "Duelista", 
+                descricao: "Agente das Filipinas. Velocidade e choque.",
+                imagem: "imagens/agentes/Neon_Artwork_Full.png",
+                habilidades: [
+                    { nome: "Q - EQUIPAMENTO DE CHOQUE", desc: "Bola de concussão." },
+                    { nome: "E - TRILHA VELOZ", desc: "Corrida elétrica." },
+                    { nome: "C - VIA EXPRESSA", desc: "Paredes elétricas." },
+                    { nome: "X - SOBRECARGA", desc: "Raio letal." }
+                ]
+            },
+            { 
+                nome: "Iso", 
+                classe: "Duelista", 
+                descricao: "Agente da China. Atirador de elite.",
+                imagem: "imagens/agentes/Iso_Artwork_Full.png",
+                habilidades: [
+                    { nome: "Q - CONTINGÊNCIA", desc: "Escudo de energia." },
+                    { nome: "E - FLUXO DE PROTEÇÃO", desc: "Escudo temporário." },
+                    { nome: "C - TIROTEIO", desc: "Arena 1v1." },
+                    { nome: "X - EXECUÇÃO", desc: "Dano bônus." }
+                ]
+            },
+            { 
+                nome: "Waylay", 
+                classe: "Duelista", 
+                descricao: "Agente tailandesa. Velocidade e reflexos.",
+                imagem: "imagens/agentes/Waylay_Artwork.png",
+                habilidades: [
+                    { nome: "Q - VELOCIDADE DA LUZ", desc: "Dash duplo." },
+                    { nome: "E - REFRAÇÃO", desc: "Volta ao farol." },
+                    { nome: "C - SATURAR", desc: "Lentidão forte." },
+                    { nome: "X - CAMINHOS CONVERGENTES", desc: "Velocidade e lentidão." }
+                ]
+            },
+
+            // ===== CONTROLADORES (6) =====
+            { 
+                nome: "Brimstone", 
+                classe: "Controlador", 
+                descricao: "Agente dos EUA. Suporte tático.",
+                imagem: "imagens/agentes/Brimstone_Artwork_Full.png",
+                habilidades: [
+                    { nome: "Q - INCENDIÁRIO", desc: "Granada de fogo." },
+                    { nome: "E - FUMAÇA CELESTIAL", desc: "Fumaça no mapa." },
+                    { nome: "C - SINALIZADOR", desc: "Estimulante." },
+                    { nome: "X - ATAQUE ORBITAL", desc: "Laser orbital." }
+                ]
+            },
+            { 
+                nome: "Viper", 
+                classe: "Controlador", 
+                descricao: "Agente dos EUA. Mestre em toxinas.",
+                imagem: "imagens/agentes/Viper_Artwork_Full.png",
+                habilidades: [
+                    { nome: "Q - NUVEM VENENOSA", desc: "Gás ativável." },
+                    { nome: "E - CORTINA TÓXICA", desc: "Parede de gás." },
+                    { nome: "C - VENENO DE COBRA", desc: "Poça de ácido." },
+                    { nome: "X - POÇO VIROSO", desc: "Nuvem gigante." }
+                ]
+            },
+            { 
+                nome: "Omen", 
+                classe: "Controlador", 
+                descricao: "Agente fantasma. Manipula visão.",
+                imagem: "imagens/agentes/Omen_Artwork_Full.png",
+                habilidades: [
+                    { nome: "Q - PARANOIA", desc: "Reduz visão." },
+                    { nome: "E - MANTO SOMBRIO", desc: "Smoke através de paredes." },
+                    { nome: "C - PASSOS TENEBROSOS", desc: "Teleporte curto." },
+                    { nome: "X - DAS SOMBRAS", desc: "Teleporte global." }
+                ]
+            },
+            { 
+                nome: "Astra", 
+                classe: "Controlador", 
+                descricao: "Agente de Gana. Controla o espaço.",
+                imagem: "imagens/agentes/Astra_Artwork_Full.png",
+                habilidades: [
+                    { nome: "Q - POÇO GRAVITACIONAL", desc: "Puxa inimigos." },
+                    { nome: "E - NEBULOSA", desc: "Fumaça via estrelas." },
+                    { nome: "C - ESTRELA CADENTE", desc: "Atordoa." },
+                    { nome: "X - DIVISA CÓSMICA", desc: "Parede que bloqueia." }
+                ]
+            },
+            { 
+                nome: "Harbor", 
+                classe: "Controlador", 
+                descricao: "Agente da Índia. Domina a água.",
+                imagem: "imagens/agentes/Harbor_Artwork_Full.png",
+                habilidades: [
+                    { nome: "Q - ENSEADA", desc: "Parede d'água." },
+                    { nome: "E - MARÉ ALTA", desc: "Onda concussiva." },
+                    { nome: "C - RESSACA", desc: "Lentidão forte." },
+                    { nome: "X - VINGANÇA", desc: "Ondas de lentidão." }
+                ]
+            },
+            { 
+                nome: "Clove", 
+                classe: "Controlador", 
+                descricao: "Agente da Escócia. Manipula vida e morte.",
+                imagem: "imagens/agentes/Clove_Artwork.png",
+                habilidades: [
+                    { nome: "Q - INTRIGA", desc: "Decaimento 90." },
+                    { nome: "E - ARDIS", desc: "Fumaças pós-morte." },
+                    { nome: "C - ÂNIMO", desc: "Vida extra." },
+                    { nome: "X - AINDA NÃO MORRI", desc: "Ressurreição." }
+                ]
+            },
+
+            // ===== INICIADORES (7) =====
+            { 
+                nome: "Sova", 
+                classe: "Iniciador", 
+                descricao: "Agente da Rússia. Rastreador.",
+                imagem: "imagens/agentes/Sova_Artwork_Full.png",
+                habilidades: [
+                    { nome: "Q - FLECHA DE CHOQUE", desc: "Dano em área." },
+                    { nome: "E - FLECHA RASTREADORA", desc: "Revela inimigos." },
+                    { nome: "C - DRONE CORUJA", desc: "Dardo revelador." },
+                    { nome: "X - FÚRIA DO CAÇADOR", desc: "Raios energéticos." }
+                ]
+            },
+            { 
+                nome: "Breach", 
+                classe: "Iniciador", 
+                descricao: "Agente da Suécia. Atordoa.",
+                imagem: "imagens/agentes/Breach_Artwork_Full.png",
+                habilidades: [
+                    { nome: "Q - ESTOPIM", desc: "Clarão no chão." },
+                    { nome: "E - FALHA TECTÔNICA", desc: "Fenda atordoante." },
+                    { nome: "C - RÉPLICA", desc: "3 ondas." },
+                    { nome: "X - ONDA TROVEJANTE", desc: "Cone de atordoamento." }
+                ]
+            },
+            { 
+                nome: "Skye", 
+                classe: "Iniciador", 
+                descricao: "Agente da Austrália. Cura e rastreia.",
+                imagem: "imagens/agentes/Skye_Artwork_Full.png",
+                habilidades: [
+                    { nome: "Q - PREDADORA", desc: "Clarão controlável." },
+                    { nome: "E - SAGITARIANA", desc: "Revela inimigos." },
+                    { nome: "C - REFLORESCER", desc: "Cura em área." },
+                    { nome: "X - BUSCADORAS", desc: "Rastreadores de medo." }
+                ]
+            },
+            { 
+                nome: "KAY/O", 
+                classe: "Iniciador", 
+                descricao: "Robô de combate. Suprime habilidades.",
+                imagem: "imagens/agentes/KAYO_Artwork_Full.png",
+                habilidades: [
+                    { nome: "Q - FLASH/DRIVE", desc: "Clarão." },
+                    { nome: "E - PONTO/ZERO", desc: "Concussão." },
+                    { nome: "C - FRAG/FRAG", desc: "Granada." },
+                    { nome: "X - NULL/CMD", desc: "Supressão em área." }
+                ]
+            },
+            { 
+                nome: "Fade", 
+                classe: "Iniciador", 
+                descricao: "Agente da Turquia. Caçadora de almas.",
+                imagem: "imagens/agentes/Fade_Artwork_Full.png",
+                habilidades: [
+                    { nome: "Q - APANHAR", desc: "Cega e revela." },
+                    { nome: "E - ASSOMBRAR", desc: "Rastro revelador." },
+                    { nome: "C - VARRER", desc: "Criatura de medo." },
+                    { nome: "X - CREPÚSCULO", desc: "Onda de medo." }
+                ]
+            },
+            { 
+                nome: "Gekko", 
+                classe: "Iniciador", 
+                descricao: "Agente de Los Angeles. Criaturas.",
+                imagem: "imagens/agentes/Gekko_Artwork_Full.png",
+                habilidades: [
+                    { nome: "Q - DIZZY", desc: "Clarão voador." },
+                    { nome: "E - WINGMAN", desc: "Planta/desarma." },
+                    { nome: "C - MOSH", desc: "Poça de dano." },
+                    { nome: "X - ANIQUILAÇÃO", desc: "Explosão massiva." }
+                ]
+            },
+            { 
+                nome: "Tejo", 
+                classe: "Iniciador", 
+                descricao: "Agente da Colômbia. Mísseis guiados.",
+                imagem: "imagens/agentes/Tejo_Artwork.png",
+                habilidades: [
+                    { nome: "Q - ENTREGA ESPECIAL", desc: "Dano e concussão." },
+                    { nome: "E - DRONE FURTIVO", desc: "Revelação." },
+                    { nome: "C - DESCARGAS GUIADAS", desc: "Mísseis guiados." },
+                    { nome: "X - ARMAGEDOM", desc: "Explosões em linha." }
+                ]
+            },
+
+            // ===== SENTINELAS (7) =====
+            { 
+                nome: "Sage", 
+                classe: "Sentinela", 
+                descricao: "Agente da China. Cura e revive.",
+                imagem: "imagens/agentes/Sage_Artwork_Full.png",
+                habilidades: [
+                    { nome: "Q - ORBE DE LENTIDÃO", desc: "Campo de lentidão." },
+                    { nome: "E - ORBE CURATIVO", desc: "Cura aliado." },
+                    { nome: "C - BARREIRA DE ORBE", desc: "Parede de gelo." },
+                    { nome: "X - RESSURREIÇÃO", desc: "Revive aliado." }
+                ]
+            },
+            { 
+                nome: "Cypher", 
+                classe: "Sentinela", 
+                descricao: "Agente do Marrocos. Vigilante.",
+                imagem: "imagens/agentes/Cypher_Artwork_Full.png",
+                habilidades: [
+                    { nome: "Q - JAULA CIBERNÉTICA", desc: "Reduz visão." },
+                    { nome: "E - FIO-ARMADILHA", desc: "Captura e revela." },
+                    { nome: "C - CÂMERA", desc: "Dardo revelador." },
+                    { nome: "X - ASSALTO NEURAL", desc: "Revela todos." }
+                ]
+            },
+            { 
+                nome: "Killjoy", 
+                classe: "Sentinela", 
+                descricao: "Agente da Alemanha. Torretas.",
+                imagem: "imagens/agentes/Killjoy_Artwork_Full.png",
+                habilidades: [
+                    { nome: "Q - ROBÔ DE ALARME", desc: "Explode em inimigos." },
+                    { nome: "E - TORRETA", desc: "Atira automaticamente." },
+                    { nome: "C - NANOSWARM", desc: "Dano acionável." },
+                    { nome: "X - CONFINAMENTO", desc: "Prende inimigos." }
+                ]
+            },
+            { 
+                nome: "Chamber", 
+                classe: "Sentinela", 
+                descricao: "Agente da França. Atirador de luxo.",
+                imagem: "imagens/agentes/Chamber_Artwork_Full.png",
+                habilidades: [
+                    { nome: "Q - CAÇADOR DE CABEÇAS", desc: "Pistola pesada." },
+                    { nome: "E - MARCA REGISTRADA", desc: "Armadilha." },
+                    { nome: "C - ENCONTRO MARCADO", desc: "Teleporte." },
+                    { nome: "X - TOUR DE FORCE", desc: "Fuzil lento." }
+                ]
+            },
+            { 
+                nome: "Deadlock", 
+                classe: "Sentinela", 
+                descricao: "Agente da Noruega. Redes.",
+                imagem: "imagens/agentes/Deadlock_Artwork_Full.png",
+                habilidades: [
+                    { nome: "Q - SENSOR SÔNICO", desc: "Captura e concussa." },
+                    { nome: "E - MALHA GRAVITACIONAL", desc: "Lentidão." },
+                    { nome: "C - BARREIRA ANIQUILADORA", desc: "Parede de som." },
+                    { nome: "X - ANCORAGEM", desc: "Prende o terrorista." }
+                ]
+            },
+            { 
+                nome: "Vyse", 
+                classe: "Sentinela", 
+                descricao: "Agente de metal vivo. Espinhos.",
+                imagem: "imagens/agentes/Vyse_Artwork.png",
+                habilidades: [
+                    { nome: "Q - CISALHAR", desc: "Parede metálica." },
+                    { nome: "E - ROSA ARQUEADA", desc: "Clarão metálico." },
+                    { nome: "C - ESPINHOS CORTANTES", desc: "Dano e lentidão." },
+                    { nome: "X - JARDIM DE AÇO", desc: "Bloqueia armas." }
+                ]
+            },
+            { 
+                nome: "Veto", 
+                classe: "Sentinela", 
+                descricao: "Agente mais novo (2026). Controle de área.",
+                imagem: "imagens/agentes/Veto_Artwork.png",
+                habilidades: [
+                    { nome: "Q - IMOBILIZAÇÃO", desc: "Armadilha que prende." },
+                    { nome: "E - ATALHO", desc: "Teleporte de volta." },
+                    { nome: "C - INTERCEPTADOR", desc: "Destrói construções." },
+                    { nome: "X - EVOLUÇÃO", desc: "Regeneração." }
+                ]
+            }
+        ];
+
+        function renderizarAgentes() {
+            const grid = document.getElementById('agentes-grid');
+            grid.innerHTML = '';
+
+            agentes.forEach(agente => {
+                const card = document.createElement('div');
+                card.className = 'agente-card';
+
+                let habilidadesHTML = '';
+                agente.habilidades.forEach(habilidade => {
+                    habilidadesHTML += `
+                        <div class="habilidade-item">
+                            <span class="habilidade-nome">${habilidade.nome}</span>
+                            <span class="habilidade-desc">${habilidade.desc}</span>
+                        </div>
+                    `;
+                });
+
+                card.innerHTML = `
+                    <div class="agente-imagem">
+                        <img src="${agente.imagem}" alt="${agente.nome}" loading="lazy" onerror="this.parentElement.innerHTML='<span style=color:#ff4654;font-weight:700;>IMAGEM NÃO ENCONTRADA</span>'">
+                    </div>
+                    <div class="agente-header">
+                        <h3>${agente.nome}</h3>
+                        <span class="classe ${agente.classe}">${agente.classe.toUpperCase()}</span>
+                    </div>
+                    <div class="agente-desc">${agente.descricao}</div>
+                    <div class="habilidades">
+                        <h4>HABILIDADES</h4>
+                        ${habilidadesHTML}
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+        }
+
+        renderizarAgentes();
+
+        const botoesFiltro = document.querySelectorAll('.filtro-btn');
+        botoesFiltro.forEach(botao => {
+            botao.addEventListener('click', function() {
+                botoesFiltro.forEach(b => b.classList.remove('ativo'));
+                this.classList.add('ativo');
+
+                const filtro = this.textContent.trim();
+                
+                if (filtro === 'TODOS') {
+                    renderizarAgentes();
+                } else {
+                    const grid = document.getElementById('agentes-grid');
+                    grid.innerHTML = '';
+                    
+                    const agentesFiltrados = agentes.filter(a => a.classe.toUpperCase() === filtro);
+                    
+                    agentesFiltrados.forEach(agente => {
+                        const card = document.createElement('div');
+                        card.className = 'agente-card';
+                        
+                        let habilidadesHTML = '';
+                        agente.habilidades.forEach(habilidade => {
+                            habilidadesHTML += `
+                                <div class="habilidade-item">
+                                    <span class="habilidade-nome">${habilidade.nome}</span>
+                                    <span class="habilidade-desc">${habilidade.desc}</span>
+                                </div>
+                            `;
+                        });
+
+                        card.innerHTML = `
+                            <div class="agente-imagem">
+                                <img src="${agente.imagem}" alt="${agente.nome}" loading="lazy" onerror="this.parentElement.innerHTML='<span style=color:#ff4654;font-weight:700;>IMAGEM NÃO ENCONTRADA</span>'">
+                            </div>
+                            <div class="agente-header">
+                                <h3>${agente.nome}</h3>
+                                <span class="classe ${agente.classe}">${agente.classe.toUpperCase()}</span>
+                            </div>
+                            <div class="agente-desc">${agente.descricao}</div>
+                            <div class="habilidades">
+                                <h4>HABILIDADES</h4>
+                                ${habilidadesHTML}
+                            </div>
+                        `;
+
+                        grid.appendChild(card);
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

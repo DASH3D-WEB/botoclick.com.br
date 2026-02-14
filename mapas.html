@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAPAS • DASH ZONE</title>
+    
+    <!-- FONTE INTER (OFICIAL RIOT) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ===== TEMA OFICIAL RIOT GAMES 2026 ===== */
+        :root {
+            --vermelho: #ff4654;
+            --vermelho-escuro: #d13b47;
+            --preto: #1e1e1e;
+            --cinza: #2c2c2c;
+            --cinza-claro: #3a3a3a;
+            --branco: #f9f9f9;
+            --gradiente: linear-gradient(135deg, #ff4654 0%, #ff6f7e 100%);
+            --sombra: 0 8px 24px rgba(0, 0, 0, 0.4);
+            --borda: 1px solid rgba(255, 70, 84, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--preto);
+            background-image: 
+                linear-gradient(rgba(255, 70, 84, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 70, 84, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            color: var(--branco);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+        }
+
+        header {
+            background: rgba(30, 30, 30, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--vermelho);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header h1 {
+            font-size: 2.2em;
+            font-weight: 800;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--branco);
+        }
+
+        header h1 span {
+            color: var(--vermelho);
+            font-weight: 900;
+        }
+
+        nav {
+            background: rgba(30, 30, 30, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            border-bottom: var(--borda);
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--branco);
+            text-decoration: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.95em;
+            padding: 5px 0;
+            position: relative;
+            transition: 0.2s;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--gradiente);
+            transition: 0.2s;
+            transform: translateX(-50%);
+        }
+
+        nav a:hover {
+            color: var(--vermelho);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        nav a.ativo {
+            color: var(--vermelho);
+        }
+
+        nav a.ativo::after {
+            width: 100%;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 50px 20px;
+        }
+
+        .titulo-pagina {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 40px 20px;
+            background: rgba(44, 44, 44, 0.3);
+            border-radius: 16px;
+            border: var(--borda);
+            backdrop-filter: blur(5px);
+        }
+
+        .titulo-pagina h2 {
+            font-size: 3.5em;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+            background: var(--gradiente);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .titulo-pagina p {
+            font-size: 1.2em;
+            color: #ccc;
+            letter-spacing: 1px;
+        }
+
+        .filtros {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        .filtro-btn {
+            background: transparent;
+            color: var(--branco);
+            border: 1px solid var(--vermelho);
+            padding: 10px 25px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: 0.2s;
+            border-radius: 50px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .filtro-btn:hover,
+        .filtro-btn.ativo {
+            background: var(--gradiente);
+            color: var(--branco);
+            border-color: transparent;
+            box-shadow: 0 4px 15px rgba(255, 70, 84, 0.3);
+        }
+
+        .mapas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 30px;
+        }
+
+        .mapa-card {
+            background: var(--cinza);
+            border: var(--borda);
+            border-radius: 12px;
+            padding: 25px;
+            transition: 0.25s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mapa-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 0;
+            background: var(--gradiente);
+            transition: 0.25s;
+        }
+
+        .mapa-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--vermelho);
+            box-shadow: var(--sombra);
+            background: #333;
+        }
+
+        .mapa-card:hover::before {
+            height: 100%;
+        }
+
+        .mapa-imagem {
+            width: 100%;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            overflow: hidden;
+            border: var(--borda);
+        }
+
+        .mapa-imagem img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.4s ease;
+        }
+
+        .mapa-card:hover .mapa-imagem img {
+            transform: scale(1.08);
+            filter: brightness(1.1);
+        }
+
+        .mapa-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: var(--borda);
+            padding-bottom: 15px;
+        }
+
+        .mapa-header h3 {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--branco);
+            letter-spacing: 1px;
+        }
+
+        .tipo {
+            padding: 6px 16px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.7em;
+            border-radius: 50px;
+            color: var(--branco);
+        }
+
+        .tipo-retomada { 
+            background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
+            box-shadow: 0 2px 10px rgba(139, 92, 246, 0.3);
+        }
+        
+        .tipo-2bombs { 
+            background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+            box-shadow: 0 2px 10px rgba(16, 185, 129, 0.3);
+        }
+        
+        .tipo-3bombs { 
+            background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+            box-shadow: 0 2px 10px rgba(245, 158, 11, 0.3);
+        }
+        
+        .tipo-vertical { 
+            background: linear-gradient(135deg, #ff8c42 0%, #ffa25e 100%);
+            box-shadow: 0 2px 10px rgba(255, 140, 66, 0.3);
+        }
+        
+        .tipo-linear { 
+            background: linear-gradient(135deg, #6b7280 0%, #9ca3af 100%);
+            box-shadow: 0 2px 10px rgba(107, 114, 128, 0.3);
+        }
+
+        .mapa-descricao {
+            color: #ccc;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+            line-height: 1.5;
+            border-left: 3px solid var(--vermelho);
+            padding-left: 15px;
+        }
+
+        .info-mapa {
+            margin-top: 10px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .info-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px 18px;
+            border-left: 3px solid var(--vermelho);
+            border-radius: 0 8px 8px 0;
+            font-size: 0.9em;
+            flex: 1 1 calc(50% - 15px);
+        }
+
+        .info-label {
+            color: #aaa;
+            text-transform: uppercase;
+            font-size: 0.65em;
+            letter-spacing: 1px;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            color: var(--branco);
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        .ferramentas-relacionadas {
+            margin-top: 60px;
+            padding: 30px;
+            background: rgba(44, 44, 44, 0.3);
+            border-radius: 16px;
+            border: var(--borda);
+        }
+
+        .ferramentas-relacionadas h3 {
+            color: var(--branco);
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ferramentas-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .ferramentas-links a {
+            background: rgba(0, 0, 0, 0.2);
+            color: var(--branco);
+            text-decoration: none;
+            padding: 15px 25px;
+            border-radius: 8px;
+            border: var(--borda);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.2s;
+        }
+
+        .ferramentas-links a:hover {
+            border-color: var(--vermelho);
+            background: #333;
+            transform: translateY(-3px);
+        }
+
+        .ferramentas-links span {
+            font-size: 1.5em;
+        }
+
+        footer {
+            background: var(--cinza);
+            border-top: 2px solid var(--vermelho);
+            padding: 50px 0;
+            margin-top: 100px;
+            text-align: center;
+        }
+
+        footer p {
+            color: #aaa;
+            letter-spacing: 1.5px;
+            font-size: 0.95em;
+        }
+
+        .footer-credit {
+            margin-top: 20px;
+            color: #666;
+            font-size: 0.8em;
+            border-top: 1px solid rgba(255,70,84,0.2);
+            padding-top: 20px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        @media (max-width: 768px) {
+            header h1 { font-size: 1.8em; }
+            nav { gap: 20px; }
+            nav a { font-size: 0.8em; }
+            .titulo-pagina h2 { font-size: 2.5em; }
+            .mapas-grid { grid-template-columns: 1fr; }
+            .info-item { flex: 1 1 100%; }
+            .ferramentas-links { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>DASH <span>ZONE</span></h1>
+    </header>
+
+    <nav>
+         <a href="index.html">INÍCIO</a>
+        <a href="agentes.html">AGENTES</a>
+        <a href="mapas.html" class="ativo">MAPAS</a>
+        <a href="arsenal.html">ARSENAL</a>
+        <a href="treino.html">TREINO</a>
+        <a href="sensitivity-tool.html">SENSIBILIDADE</a>
+        <a href="sensitivity-converter.html">CONVERSOR</a>
+        <a href="pro-sense.html">SENSE DOS PROS</a>
+    </nav>
+
+    <div class="container">
+        <div class="titulo-pagina">
+            <h2>MAPAS</h2>
+            <p>TEATRO DE OPERAÇÕES • PATCH 12.02</p>
+        </div>
+
+        <div class="filtros">
+            <button class="filtro-btn ativo">TODOS</button>
+            <button class="filtro-btn">RETOMADA</button>
+            <button class="filtro-btn">2 BOMBS</button>
+            <button class="filtro-btn">3 BOMBS</button>
+            <button class="filtro-btn">VERTICAL</button>
+        </div>
+
+        <div class="mapas-grid" id="mapas-grid"></div>
+
+        <div class="ferramentas-relacionadas">
+            <h3>🛠️ FERRAMENTAS RELACIONADAS</h3>
+            <div class="ferramentas-links">
+                <a href="sensitivity-tool.html">
+                    <span>🎯</span>
+                    Calculadora de Sensibilidade
+                </a>
+                <a href="sensitivity-converter.html">
+                    <span>🔄</span>
+                    Conversor entre Jogos
+                </a>
+                <a href="treino.html">
+                    <span>🧠</span>
+                    Guia de Treino
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>DASH ZONE • SISTEMA TÁTICO DE TREINAMENTO</p>
+        <p style="margin-top: 10px; color: #ff4654;">#DASHZONE</p>
+        <div class="footer-credit">
+            DASH ZONE não é associado, patrocinado ou afiliado à Riot Games Inc. Valorant e todos os seus personagens, marcas e imagens são propriedade da Riot Games. Projeto independente criado por DASH para a comunidade brasileira.
+        </div>
+    </footer>
+
+    <script>
+        const mapas = [
+            {
+                nome: "Bind",
+                tipo: "Retomada",
+                imagem: "imagens/mapas/Bind.png",
+                sites: "A / B",
+                caracteristica: "Teleportes",
+                descricao: "Mapa sem meio. Dois teleportes unem os lados. Ideal para rotações rápidas e flanqueios."
+            },
+            {
+                nome: "Haven",
+                tipo: "3 bombs",
+                imagem: "imagens/mapas/Haven.png",
+                sites: "A / B / C",
+                caracteristica: "3 bombs",
+                descricao: "Único mapa com 3 locais de bomba. Exige adaptação tática e controle de múltiplos pontos."
+            },
+            {
+                nome: "Split",
+                tipo: "Vertical",
+                imagem: "imagens/mapas/Split.png",
+                sites: "A / B",
+                caracteristica: "Cordas e alturas",
+                descricao: "Verticalidade extrema. Cordas e múltiplos níveis favorecem controle de visão."
+            },
+            {
+                nome: "Ascent",
+                tipo: "Retomada",
+                imagem: "imagens/mapas/Ascent.png",
+                sites: "A / B",
+                caracteristica: "Portas mecânicas",
+                descricao: "Meio aberto e estratégico. Portas fecháveis no A e B mudam o ritmo do round."
+            },
+            {
+                nome: "Icebox",
+                tipo: "Vertical",
+                imagem: "imagens/mapas/Icebox.png",
+                sites: "A / B",
+                caracteristica: "Containers e cordas",
+                descricao: "Mapa ártico com escaláveis e alto vertical. Favorito para operadores."
+            },
+            {
+                nome: "Breeze",
+                tipo: "Retomada",
+                imagem: "imagens/mapas/Breeze.png",
+                sites: "A / B",
+                caracteristica: "Espaços abertos",
+                descricao: "Mapa tropical com linhas de visão longas. Domínio de fuzis é essencial."
+            },
+            {
+                nome: "Fracture",
+                tipo: "Linear",
+                imagem: "imagens/mapas/Fracture.png",
+                sites: "A / B",
+                caracteristica: "Formato H",
+                descricao: "Ataque vem dos dois lados. Zona central é o coração do mapa."
+            },
+            {
+                nome: "Pearl",
+                tipo: "Retomada",
+                imagem: "imagens/mapas/Pearl.png",
+                sites: "A / B",
+                caracteristica: "Subterrâneo",
+                descricao: "Cidade submersa. Rotas subterrâneas criam ângulos únicos."
+            },
+            {
+                nome: "Lotus",
+                tipo: "3 bombs",
+                imagem: "imagens/mapas/Lotus.png",
+                sites: "A / B / C",
+                caracteristica: "Portas giratórias",
+                descricao: "Mapa com 3 bombs e portas interativas que mudam a dinâmica do round."
+            },
+            {
+                nome: "Sunset",
+                tipo: "Retomada",
+                imagem: "imagens/mapas/Sunset.png",
+                sites: "A / B",
+                caracteristica: "Mapa urbano",
+                descricao: "Los Angeles. Homenagem ao cenário original do Valorant. Rotas clássicas."
+            },
+            {
+                nome: "Abyss",
+                tipo: "Retomada",
+                imagem: "imagens/mapas/Abyss.png",
+                sites: "A / B",
+                caracteristica: "Queda livre",
+                descricao: "Mapa com bordas sem proteção. Posicionamento é crucial para não cair."
+            },
+            {
+                nome: "Corrode",
+                tipo: "2 bombs",
+                imagem: "imagens/mapas/Corrode.png",
+                sites: "A / B",
+                caracteristica: "Dano químico",
+                descricao: "Fábrica de produtos químicos. Risco ambiental e áreas contaminadas."
+            }
+        ];
+
+        function renderizarMapas(filtro = "TODOS") {
+            const grid = document.getElementById('mapas-grid');
+            grid.innerHTML = '';
+
+            const mapasFiltrados = filtro === "TODOS" 
+                ? mapas 
+                : mapas.filter(m => m.tipo === filtro);
+
+            mapasFiltrados.forEach(mapa => {
+                const card = document.createElement('div');
+                card.className = 'mapa-card';
+
+                let tipoClass = '';
+                switch(mapa.tipo) {
+                    case 'Retomada': tipoClass = 'tipo-retomada'; break;
+                    case '2 bombs': tipoClass = 'tipo-2bombs'; break;
+                    case '3 bombs': tipoClass = 'tipo-3bombs'; break;
+                    case 'Vertical': tipoClass = 'tipo-vertical'; break;
+                    case 'Linear': tipoClass = 'tipo-linear'; break;
+                }
+
+                card.innerHTML = `
+                    <div class="mapa-imagem">
+                        <img src="${mapa.imagem}" alt="${mapa.nome}" loading="lazy" onerror="this.parentElement.innerHTML='<span style=color:#ff4654;font-weight:700;>IMAGEM NÃO ENCONTRADA</span>'">
+                    </div>
+                    <div class="mapa-header">
+                        <h3>${mapa.nome}</h3>
+                        <span class="tipo ${tipoClass}">${mapa.tipo}</span>
+                    </div>
+                    <div class="mapa-descricao">${mapa.descricao}</div>
+                    <div class="info-mapa">
+                        <div class="info-item">
+                            <span class="info-label">SITES</span>
+                            <span class="info-value">${mapa.sites}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">CARACTERÍSTICA</span>
+                            <span class="info-value">${mapa.caracteristica}</span>
+                        </div>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+        }
+
+        renderizarMapas();
+
+        const botoesFiltro = document.querySelectorAll('.filtro-btn');
+        botoesFiltro.forEach(botao => {
+            botao.addEventListener('click', function() {
+                botoesFiltro.forEach(b => b.classList.remove('ativo'));
+                this.classList.add('ativo');
+                const filtro = this.textContent.trim();
+                
+                if (filtro === 'TODOS') renderizarMapas('TODOS');
+                else if (filtro === 'RETOMADA') renderizarMapas('Retomada');
+                else if (filtro === '2 BOMBS') renderizarMapas('2 bombs');
+                else if (filtro === '3 BOMBS') renderizarMapas('3 bombs');
+                else if (filtro === 'VERTICAL') renderizarMapas('Vertical');
+            });
+        });
+    </script>
+</body>
+</html>
